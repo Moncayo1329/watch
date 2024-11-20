@@ -7,14 +7,14 @@ const getAllMovies = (req,res) => {
 // Crear una nueva película
 
 const createMovie = (req, res) => {
-    res.send('create a new Movie')
+    res.json(req,body)
 }
 
 
 // Obtener una película específica
 
 const getMovie = (req, res) => {
-    res.send('get single Movie')
+    res.json({id:req.params.id})
 } 
 
 // Actualizar el estado de una película
