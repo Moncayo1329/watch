@@ -1,3 +1,5 @@
+const Movie = require('../models/movies')
+
 const getAllMovies = (req,res) => {
 
     res.send('get all movies')
@@ -6,8 +8,9 @@ const getAllMovies = (req,res) => {
 
 // Crear una nueva película
 
-const createMovie = (req, res) => {
-    res.json(req,body)
+const createMovie = async (req, res) => {
+    const movie = await Movie.create(req.body)
+    res.status(201).json({ movie }) 
 }
 
 

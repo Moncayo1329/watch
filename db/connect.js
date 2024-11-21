@@ -1,17 +1,13 @@
 const mongoose = require('mongoose');
 
-const connectionString = 'mongodb+srv://Mike_7:Barcelona123456@expressproject.gmb39.mongodb.net/watchListMovie?retryWrites=true&w=majority';
-
-const connectDB = async () => {
+const connectDB = async (url) => {
     try {
-        await mongoose.connect(connectionString); // Conexión simplificada
+        await mongoose.connect(url);
         console.log('Database connected successfully!');
     } catch (error) {
         console.error('Database connection failed:', error);
-        process.exit(1); // Finaliza la aplicación si falla la conexión
+        process.exit(1); 
     }
 };
 
 module.exports = connectDB;
-
-
