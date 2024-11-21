@@ -9,8 +9,17 @@ const getAllMovies = (req,res) => {
 // Crear una nueva película
 
 const createMovie = async (req, res) => {
-    const movie = await Movie.create(req.body)
-    res.status(201).json({ movie }) 
+
+    try {
+        const movie = await Movie.create(req.body)
+        res.status(201).json({ movie }) 
+
+    } catch(error) {
+
+res.status(500).json({msg:error})
+
+    }
+
 }
 
 
