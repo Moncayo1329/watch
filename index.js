@@ -1,3 +1,5 @@
+require('./db/connect')
+
 const express = require('express');
 
 const app = express();
@@ -5,6 +7,8 @@ const movies = require('./routes/movies')
 
 
 // middleware 
+
+
 
 app.use(express.json())
 
