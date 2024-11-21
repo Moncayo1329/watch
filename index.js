@@ -1,9 +1,8 @@
-require('./db/connect')
 
 const express = require('express');
-
 const app = express();
-const movies = require('./routes/movies')
+const movies = require('./routes/movies');
+const connectDB = require('./db/connect')
 
 
 // middleware 
@@ -34,5 +33,14 @@ app.use('/api/v1/movies',movies)
 
 const port = 5000 
 
+const start = async () => {
+    try{
+  await connectDB()
+  app.listen(port, console.log(`Server is listening on http://localhost:${port}...`))
+    } catch(error){
+ console.log(error)
 
-app.listen(port, console.log(`Server is listening on http://localhost:${port}...`))
+    }
+}
+
+start()
