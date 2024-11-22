@@ -87,10 +87,11 @@ label {
   text-transform: capitalize;
 }
 
+
 input,
 textarea {
   width: 50%;
-  padding: 0.375rem 0.75rem;
+  padding: 1rem 0.75rem;
   border-radius: var(--borderRadius);
   background: var(--grey-50);
   border-color: transparent;
@@ -283,65 +284,4 @@ form > :last-child {
   display: flex;
   align-items: center;
   gap: 0 0.5rem;
-}
-.delete-btn,
-.edit-link {
-  background: transparent;
-  font-size: 0.75rem;
-  border: transparent;
-  cursor: pointer;
-}
-.edit-link {
-  color: var(--green-dark);
-}
-.delete-btn {
-  color: var(--red-dark);
-}
-
-/*************
-   SINGLE TASK
-*************/
-
-.single-task-form h4 {
-  text-align: center;
-}
-
-.single-task-form p {
-  margin-bottom: 0;
-  margin-top: 0;
-}
-
-.single-task-form .form-control {
-  display: grid;
-  grid-template-columns: 150px 1fr;
-  align-items: center;
-  justify-items: start;
-  gap: 0 1rem;
-  margin-bottom: 0.75rem;
-}
-
-.single-task-form label {
-  margin-bottom: 0;
-  font-size: 1rem;
-}
-
-.task-edit-completed {
-  width: auto;
-}
-.back-link {
-  display: block;
-  width: 250px;
-  margin: 0 auto;
-  text-align: center;
-  margin-top: 6rem;
-  background: var(--black);
-}
-.back-link:hover {
-  background: var(--black);
-  opacity: 0.75;
-}
-
-.single-task-form .form-alert {
-  text-align: center;
-  margin-top: 1rem;
 }
