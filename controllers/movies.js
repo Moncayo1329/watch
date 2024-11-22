@@ -1,8 +1,14 @@
 const Movie = require('../models/movies')
 
-const getAllMovies = (req,res) => {
+const getAllMovies = async (req,res) => {
 
-    res.send('get all movies')
+   try {
+const movies = await Movie.find({})
+    res.status(200).json({ movies })
+   } catch(error) {
+    res.status(500).json({msg:error})
+
+   }
 }
 
 
@@ -25,14 +31,43 @@ res.status(500).json({msg:error})
 
 // Obtener una película específica
 
-const getMovie = (req, res) => {
-    res.json({id:req.params.id})
+const getMovie = async (req, res) => { 
+
+    try {
+
+        const { id:movieID} = req.params
+        const movie = await Movie.findOne({_id:movieID});
+        if(!movie){
+            return res.status(400).json({msg:`No Movie with id : ${movieID}`})
+        }
+
+        res.status(200).json({ movie })
+
+    } catch {
+
+        res.status(500).json({msg:error})
+    }
+
+    
 } 
 
 // Actualizar el estado de una película
 
-const updateMovieStatus = (req, res) => {
-    res.send('Update status')
+const updateMovieStatus = async (req, res) => {
+    try {
+const {id:movieID} = req.params;
+
+const movie = await Movie.findOneAndUpdate({_id:movieID},req.body)
+
+if(!movie){
+    return res.status(400).json({msg:`No Movie with id : ${movieID}`})
+}
+
+res.status(200).json({movie})
+
+    } catch(error){
+        res.status(500).json({msg:error})
+    }
 } 
 
 
