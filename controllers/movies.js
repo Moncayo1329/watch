@@ -57,7 +57,10 @@ const updateMovieStatus = async (req, res) => {
     try {
 const {id:movieID} = req.params;
 
-const movie = await Movie.findOneAndUpdate({_id:movieID},req.body)
+const movie = await Movie.findOneAndUpdate({_id:movieID},req.body,{
+    new:true,
+    runValidators:true,
+})
 
 if(!movie){
     return res.status(400).json({msg:`No Movie with id : ${movieID}`})
