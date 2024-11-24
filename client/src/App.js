@@ -24,9 +24,9 @@ function App() {
 
   // Función para obtener detalles de una película desde la API de TMDb
   const fetchMovieDetails = async (movieTitle) => {
-    const apiKey = process.env.REACT_APP_API_KEY;
+    const apiKey = '533472bbde22403e17df87ee3d377b10';
     const url = `https://api.themoviedb.org/3/search/movie?query=${movieTitle}&api_key=${apiKey}&language=en-US`;
-
+    console.log(process.env.REACT_APP_API_KEY)
     try {
       const response = await axios.get(url);
       const movieData = response.data.results[0]; // Tomar el primer resultado
