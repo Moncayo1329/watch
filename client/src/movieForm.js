@@ -3,7 +3,7 @@ import './App.css';
 
 function Form({ addmovie }) {
   // Estado para controlar el input
-  const [value, setValue] = useState([]);
+  const [value, setValue] = useState("");
 
   // Actualizar el estado cuando el usuario escriba en el input
   const handleChange = (e) => {
