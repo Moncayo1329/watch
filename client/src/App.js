@@ -26,7 +26,6 @@ function App() {
   const fetchMovieDetails = async (movieTitle) => {
     const apiKey = '533472bbde22403e17df87ee3d377b10';
     const url = `https://api.themoviedb.org/3/search/movie?query=${movieTitle}&api_key=${apiKey}&language=en-US`;
-    console.log(process.env.REACT_APP_API_KEY)
     try {
       const response = await axios.get(url);
       const movieData = response.data.results[0]; // Tomar el primer resultado
@@ -50,12 +49,31 @@ function App() {
   // Función para agregar una nueva película
   const addmovie = async (movieTitle) => {
     const movieDetails = await fetchMovieDetails(movieTitle);
-
     if (movieDetails) {
       setMovies((prevMovies) => [...prevMovies, movieDetails]); // Añadir la nueva película al estado
       setError(null); // Limpiar cualquier mensaje de error
     }
-  };
+   
+
+
+  if (movieDetails) {
+    try {
+      const response = await axios.post("http://localhost:5000/api/v1/movies", {
+        name: movieDetails.title,
+        completed: false, // Establece el estado de la película como false inicialmente
+      });
+
+      setMovies((prevMovies) => [...prevMovies, response.data.movie]); // Añadir la nueva película al estado
+      setError(null); // Limpiar cualquier mensaje de error
+    } catch (error) {
+      setError("Hubo un error al agregar la película");
+      console.error(error);
+    }
+  }
+};
+
+
+
 
   return (
     <div className="task-form">
@@ -67,5 +85,8 @@ function App() {
     </div>
   );
 }
+
+
+
 
 export default App;
