@@ -26,7 +26,6 @@ function Form({ addmovie }) {
   return (
     <div>
       <form className="task-form" onSubmit={handleSubmit}>
-        <h4>Movie Watch List</h4>
         <div className="form-control">
           <input
             type="text"
@@ -36,14 +35,14 @@ function Form({ addmovie }) {
             value={value} // Input controlado
             onChange={handleChange} // Manejar cambios en el input
           />
-          <button type="submit" className="btn submit-btn">
-            Submit
+          <button type="submit" className="button">
+            Add Movie
           </button>
         </div>
       </form>
 
       <section className="tasks-container">
-        <p className="loading-text">Loading...</p>
+        <p className="loading-text"></p>
         <div className="tasks">
           {/* Aquí podrías mapear tareas y mostrarlas, por ahora, está vacío */}
         </div>
