@@ -4,7 +4,7 @@ const MovieSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    maxlength: 100,  // Permitir hasta 100 caracteres para el nombre
+    maxlength: 100,  // Permitir hasta 100 caracteres para la pelicula
   },
   completed: {
     type: Boolean,

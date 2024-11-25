@@ -24,25 +24,24 @@ function App() {
 
   // Función para obtener detalles de una película desde la API de TMDb
   const fetchMovieDetails = async (movieTitle) => {
-    const apiKey = '533472bbde22403e17df87ee3d377b10';
-    const url = `https://api.themoviedb.org/3/search/movie?query=${movieTitle}&api_key=${apiKey}&language=en-US`;
     try {
-      const response = await axios.get(url);
-      const movieData = response.data.results[0]; // Tomar el primer resultado
+      const response = await axios.get(`http://localhost:5000/api/movies/${movieTitle}`); // Llama a tu backend
+      const movieData = response.data; // Se asume que la respuesta es un objeto con datos de la película
 
       if (movieData) {
         return {
           title: movieData.title,
-          description: movieData.overview,
-          image: `https://image.tmdb.org/t/p/w500${movieData.poster_path}`, // URL de la imagen
+          description: movieData.description,
+          image: movieData.image, // La URL de la imagen que ya está formateada desde el backend
         };
       } else {
-        setError("Pelicula no encontrada");
+        setError("Película no encontrada");
         return null;
       }
     } catch (err) {
-      setError("Hubo un error");
+      setError("Hubo un error al obtener los detalles de la película");
       console.error(err);
+      return null;
     }
   };
 
@@ -52,28 +51,20 @@ function App() {
     if (movieDetails) {
       setMovies((prevMovies) => [...prevMovies, movieDetails]); // Añadir la nueva película al estado
       setError(null); // Limpiar cualquier mensaje de error
+      
+      // Ahora guardamos la película en la base de datos del backend
+      try {
+        const response = await axios.post("http://localhost:5000/api/v1/movies", {
+          name: movieDetails.title,
+          completed: false, // Establecer como no completada inicialmente
+        });
+        setMovies((prevMovies) => [...prevMovies, response.data.movie]); // Añadir la nueva película al estado
+      } catch (error) {
+        setError("Hubo un error al agregar la película");
+        console.error(error);
+      }
     }
-   
-
-
-  if (movieDetails) {
-    try {
-      const response = await axios.post("http://localhost:5000/api/v1/movies", {
-        name: movieDetails.title,
-        completed: false, // Establece el estado de la película como false inicialmente
-      });
-
-      setMovies((prevMovies) => [...prevMovies, response.data.movie]); // Añadir la nueva película al estado
-      setError(null); // Limpiar cualquier mensaje de error
-    } catch (error) {
-      setError("Hubo un error al agregar la película");
-      console.error(error);
-    }
-  }
-};
-
-
-
+  };
 
   return (
     <div className="task-form">
@@ -85,8 +76,5 @@ function App() {
     </div>
   );
 }
-
-
-
 
 export default App;
