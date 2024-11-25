@@ -52,3 +52,5 @@ function Form({ addmovie }) {
 }
 
 export default Form;
+
+
