@@ -267,19 +267,6 @@ form > :last-child {
 
 
 
-
-.movie-card {
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 16px;
-  margin: 16px;
-  text-align: center;
-  width: 280px;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding-top: 300px;
-}
-
 .movie-poster {
   width: 15%;
   height: auto;
@@ -296,3 +283,63 @@ form > :last-child {
   font-size: 0.8em;
   color: #555;
 }
+
+
+/* Estilos para pantallas pequeñas */
+@media screen and (max-width: 576px) {
+  body {
+    padding: 0.5rem; /* Reducir espacio general */
+  }
+
+  p {
+    max-width: 100%; /* Asegurar que los párrafos ocupen el ancho completo */
+    margin-bottom: 1rem;
+  }
+
+  h1, h2, h3, h4, h5 {
+    margin-bottom: 2rem; /* Reducir espacio entre encabezados */
+    font-size: 1.2rem; /* Reducir tamaño de fuente */
+  }
+
+  .tasks-container {
+    width: 90%; /* Reducir ancho en móviles */
+    padding-bottom: 3rem;
+  }
+
+  .button {
+    width: 100%; /* Botones más grandes y fáciles de tocar */
+    padding: 10px 20px;
+  }
+
+  input, textarea {
+    width: 100%; /* Asegurar que inputs ocupen todo el espacio */
+    padding: 1rem;
+    border-radius: 10px; /* Ajustar diseño */
+  }
+
+  .movie-card {
+    width: 100%; /* Ocupa todo el ancho en móviles */
+    margin: 8px 0; /* Espaciado más pequeño */
+  }
+
+  .movie-poster {
+    width: 40%; /* Tamaño adecuado para pantallas pequeñas */
+    height: auto;
+  }
+
+  .movie-title {
+    font-size: 1rem; /* Fuente más grande para mejor legibilidad */
+  }
+
+  .movie-description {
+    font-size: 0.9rem;
+  }
+}
+
+
+
+
+
+
+
+
