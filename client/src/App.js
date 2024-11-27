@@ -15,12 +15,7 @@ function App() {
     }
   }, []); // Este useEffect solo se ejecuta al montar el componente
 
-  // Guardar las películas en localStorage cada vez que cambien
-  useEffect(() => {
-    if (movies.length > 0) {
-      localStorage.setItem("movies", JSON.stringify(movies)); // Guardar las películas en localStorage
-    }
-  }, [movies]); // Este useEffect se ejecuta cada vez que el estado `movies` cambie
+  
 
   // Función para obtener detalles de una película desde la API de TMDb
   const fetchMovieDetails = async (movieTitle) => {
