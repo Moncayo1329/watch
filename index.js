@@ -55,7 +55,9 @@ const port = 5000;
 const start = async () => {
     try {
         await connectDB(process.env.MONGO_MOV);  // Conexión a la base de datos
-        app.listen(port, console.log(`Server is listening on http://localhost:${port}...`));
+        app.listen(port, '0.0.0.0',() => {
+          console.log(`Server is listening on http://localhost:${port}...`)
+        });
     } catch (error) {
         console.log(error);
     }
