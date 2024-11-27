@@ -7,7 +7,11 @@ const axios =  require('axios')
 require('dotenv').config();
 
 
-app.use(cors()); // Aplica las opciones de CORS
+app.use(cors({
+  origin: 'http://localhost:3000',  // Permite solicitudes solo de este origen
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+})); // Aplica las opciones de CORS
 
 app.use(express.json())  // Para parsear JSON en las solicitudes
 
