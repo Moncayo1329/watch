@@ -9,4 +9,4 @@ router.route('/').get(getAllMovies).post(createMovie)
 router.route('/:id').get(getMovie).patch(updateMovieStatus)
 
 
-module.exports = router
+module.exports = router;
