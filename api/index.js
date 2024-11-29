@@ -9,7 +9,9 @@ require('dotenv').config();
 
 
 
-app.use(cors());  // Aplica las opciones de CORS
+const cors = require('cors');
+app.use(cors());
+
 
 app.use(express.json())  // Para parsear JSON en las solicitudes
 
