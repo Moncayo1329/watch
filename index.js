@@ -23,7 +23,7 @@ app.get('/Inicio', (req, res) => {
 });
 
 
-app.get('/api/movies/:title', async (req, res) => {
+app.get('/api/v1/movies/:title', async (req, res) => {
     const movieTitle = encodeURIComponent(req.params.title); // Codificar el título para la URL
     const apiKey = process.env.TMDB_API_KEY;
     const url = `https://api.themoviedb.org/3/search/movie?query=${movieTitle}&api_key=${apiKey}&language=en-US`;
