@@ -10,8 +10,10 @@ require('dotenv').config();
 
 
 app.use(cors({
-  origin: 'https://watch-virid.vercel.app/',  // Esto permite solicitudes desde cualquier dominio
-})); // Aplica las opciones de CORS
+  origin: '*',  // Permite solicitudes desde cualquier dominio
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],  // Puedes especificar qué métodos HTTP permitir
+  allowedHeaders: ['Content-Type', 'Authorization'],  // Puedes especificar qué cabeceras se permiten
+}));
 
 app.use(express.json())  // Para parsear JSON en las solicitudes
 
