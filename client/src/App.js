@@ -25,7 +25,7 @@ function App() {
   // Función para obtener detalles de una película desde la API de TMDb
   const fetchMovieDetails = async (movieTitle) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/movies/${movieTitle}`); // Usar variable de entorno para la URL // Llama a tu backend
+      const response = await axios.get(`http://localhost:5000/api/movies/${movieTitle}`); // Llama a tu backend
       const movieData = response.data; // Se asume que la respuesta es un objeto con datos de la película
 
       if (movieData) {
@@ -42,27 +42,6 @@ function App() {
       setError("Hubo un error al obtener los detalles de la película");
       console.error(err);
       return null;
-    }
-  };
-
-  // Función para agregar una nueva película
-  const addmovie = async (movieTitle) => {
-    const movieDetails = await fetchMovieDetails(movieTitle);
-    if (movieDetails) {
-      setMovies((prevMovies) => [...prevMovies, movieDetails]); // Añadir la nueva película al estado
-      setError(null); // Limpiar cualquier mensaje de error
-      
-      // Ahora guardamos la película en la base de datos del backend
-      try {
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/movies`, {
-          name: movieDetails.title,
-          completed: false, // Establecer como no completada inicialmente
-        });
-        setMovies((prevMovies) => [...prevMovies, response.data.movie]); // Añadir la nueva película al estado
-      } catch (error) {
-        setError("Hubo un error al agregar la película");
-        console.error(error);
-      }
     }
   };
 
