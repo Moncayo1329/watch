@@ -25,7 +25,7 @@ function App() {
   // Función para obtener detalles de una película desde la API de TMDb
   const fetchMovieDetails = async (movieTitle) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/movies/${movieTitle}`); // Llama a tu backend
+      const response = await axios.get(`https://watch-virid.vercel.app/api/movies/${movieTitle}`); // Llama a tu backend
       const movieData = response.data; // Se asume que la respuesta es un objeto con datos de la película
 
       if (movieData) {

@@ -9,7 +9,9 @@ require('dotenv').config();
 
 
 
-app.use(cors());  // Aplica las opciones de CORS
+app.use(cors({
+  origin: 'https://watch-virid.vercel.app/',  // Esto permite solicitudes desde cualquier dominio
+})); // Aplica las opciones de CORS
 
 app.use(express.json())  // Para parsear JSON en las solicitudes
 
