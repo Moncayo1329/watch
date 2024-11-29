@@ -8,14 +8,8 @@ require('dotenv').config();
 
 
 
-// Enable cors at the server side. 
-const cors = require('cors')
-const corsOption = {
-    origin: ['https://192.168.0.122:8080'],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-}
-app.use(cors(corsOption));  // Aplica las opciones de CORS
+
+app.use(cors());  // Aplica las opciones de CORS
 
 app.use(express.json())  // Para parsear JSON en las solicitudes
 
