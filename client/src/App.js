@@ -25,7 +25,12 @@ function App() {
   // Función para obtener detalles de una película desde la API de TMDb
   const fetchMovieDetails = async (movieTitle) => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/v1/movies/${movieTitle}`); // Cambié la ruta aquí
+      const response = await axios.post("http://localhost:3000/api/v1/movies", {
+        name: movieDetails.title,
+        completed: false,
+    });
+    // Add the new movie from the response to the state
+    // Cambié la ruta aquí
       const movieData = response.data; // Se asume que la respuesta es un objeto con datos de la película
 
       if (movieData) {
