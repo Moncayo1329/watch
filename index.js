@@ -56,7 +56,7 @@ app.get('/api/v1/movies/:title', async (req, res) => {
 app.use('/api/v1/movies', movies);
 
 // Puerto donde escuchará el backend
-const port = 5000;
+const port = 3000;
 
 const start = async () => {
     try {
