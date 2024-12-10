@@ -54,7 +54,7 @@ function App() {
       
       // Ahora guardamos la película en la base de datos del backend
       try {
-        const response = await axios.post("http://localhost:5000/api/v1/movies", { // Cambié la ruta aquí
+        const response = await axios.post("http://localhost:3000/api/v1/movies", { // Cambié la ruta aquí
           name: movieDetails.title,
           completed: false, // Establecer como no completada inicialmente
         });
