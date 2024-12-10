@@ -17,20 +17,13 @@ function App() {
 
   // Guardar las películas en localStorage cada vez que cambien
   useEffect(() => {
-    if (movies.length > 0) {
-      localStorage.setItem("movies", JSON.stringify(movies)); // Guardar las películas en localStorage
-    }
+    localStorage.setItem("movies", JSON.stringify(movies)); // Guardar las películas en localStorage
   }, [movies]); // Este useEffect se ejecuta cada vez que el estado `movies` cambie
 
   // Función para obtener detalles de una película desde la API de TMDb
   const fetchMovieDetails = async (movieTitle) => {
     try {
-      const response = await axios.post("http://localhost:3000/api/v1/movies", {
-        name: movieDetails.title,
-        completed: false,
-    });
-    // Add the new movie from the response to the state
-    // Cambié la ruta aquí
+      const response = await axios.get(`http://localhost:3000/api/v1/movies/${movieTitle}`);
       const movieData = response.data; // Se asume que la respuesta es un objeto con datos de la película
 
       if (movieData) {
@@ -51,15 +44,16 @@ function App() {
   };
 
   // Función para agregar una nueva película
-  const addmovie = async (movieTitle) => {
+  const addMovie = async (movieTitle) => {
     const movieDetails = await fetchMovieDetails(movieTitle);
+    
     if (movieDetails) {
       setMovies((prevMovies) => [...prevMovies, movieDetails]); // Añadir la nueva película al estado
       setError(null); // Limpiar cualquier mensaje de error
       
       // Ahora guardamos la película en la base de datos del backend
       try {
-        const response = await axios.post("http://localhost:3000/api/v1/movies", { // Cambié la ruta aquí
+        const response = await axios.post("http://localhost:3000/api/v1/movies", { 
           name: movieDetails.title,
           completed: false, // Establecer como no completada inicialmente
         });
@@ -74,7 +68,7 @@ function App() {
   return (
     <div className="task-form">
       <h4>Movie Watch List by Mike</h4>
-      <Form addmovie={addmovie} />
+      <Form addmovie={addMovie} /> {/* Asegúrate de que el nombre del prop coincida */}
       {error && <p className="error-message">{error}</p>} {/* Mostrar errores si existen */}
       {movies.map((movie, index) => (
         <Movies task={movie} key={index} /> // Mostrar todas las películas
