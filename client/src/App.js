@@ -30,7 +30,7 @@ function App() {
         return {
           title: movieData.title,
           description: movieData.description,
-          image: movieData.image, // La URL de la imagen que ya está formateada desde el backend
+          image: movieData.image,
         };
       } else {
         setError("Película no encontrada");
@@ -55,7 +55,7 @@ function App() {
       try {
         const response = await axios.post("http://localhost:3000/api/v1/movies", { 
           name: movieDetails.title,
-          completed: false, // Establecer como no completada inicialmente
+          completed: false,
         });
         setMovies((prevMovies) => [...prevMovies, response.data.movie]); // Añadir la nueva película al estado
       } catch (error) {
@@ -68,7 +68,7 @@ function App() {
   return (
     <div className="task-form">
       <h4>Movie Watch List by Mike</h4>
-      <Form addmovie={addMovie} /> {/* Asegúrate de que el nombre del prop coincida */}
+      <Form addmovie={addMovie} />
       {error && <p className="error-message">{error}</p>} {/* Mostrar errores si existen */}
       {movies.map((movie, index) => (
         <Movies task={movie} key={index} /> // Mostrar todas las películas
