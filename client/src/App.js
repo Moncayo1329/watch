@@ -67,7 +67,7 @@ function App() {
 
   return (
     <div className="task-form">
-      <h4>Movie Watch List by Mike</h4>
+      <h4>¿Dónde está la peli? </h4>
       <Form addmovie={addMovie} />
       {error && <p className="error-message">{error}</p>} {/* Mostrar errores si existen */}
       {movies.map((movie, index) => (
