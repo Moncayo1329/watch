@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 
-function Form({ addmovie }) {
+function Form({ searchMovie }) {
   // Estado para controlar el input
   const [value, setValue] = useState("");
 
@@ -19,7 +19,7 @@ function Form({ addmovie }) {
       return;
     }
 
-    addmovie(value); // Llamar a la prop `addmovie` para enviar el valor al componente padre
+    searchMovie(value); // Llamar a la prop `addmovie` para enviar el valor al componente padre
     setValue(""); // Limpiar el campo de texto después de enviar
   };
 
@@ -36,7 +36,7 @@ function Form({ addmovie }) {
             onChange={handleChange} // Manejar cambios en el input
           />
           <button type="submit" className="button">
-            Add Movie
+            search Movie
           </button>
         </div>
       </form>

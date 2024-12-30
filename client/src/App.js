@@ -1,80 +1,53 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import Movies from "./Movie"; // Componente para mostrar la película
 import Form from "./movieForm"; // Componente para el formulario
 
 function App() {
-  const [movies, setMovies] = useState([]); // Lista de películas
+  const [streamingInfo, setStreamingInfo] = useState(null);
   const [error, setError] = useState(null); // Manejo de errores
 
-  // Al cargar la aplicación, leer las películas desde localStorage.
-  useEffect(() => {
-    const storedMovies = localStorage.getItem("movies"); // Obtener las películas del localStorage
-    if (storedMovies) {
-      setMovies(JSON.parse(storedMovies)); // Parsear y asignar las películas al estado
-    }
-  }, []); // Este useEffect solo se ejecuta al montar el componente
 
-  // Guardar las películas en localStorage cada vez que cambien
-  useEffect(() => {
-    localStorage.setItem("movies", JSON.stringify(movies)); // Guardar las películas en localStorage
-  }, [movies]); // Este useEffect se ejecuta cada vez que el estado `movies` cambie
 
   // Función para obtener detalles de una película desde la API de TMDb
-  const fetchMovieDetails = async (movieTitle) => {
+  const searchMovie = async (movieTitle) => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/v1/movies/${movieTitle}`);
-      const movieData = response.data; // Se asume que la respuesta es un objeto con datos de la película
+      const response = await axios.get(`http://localhost:5000/api/v1/movies/${movieTitle}`);
+      const streamingData = response.data; // Se asume que la respuesta es un objeto con datos de la película
 
-      if (movieData) {
-        return {
-          title: movieData.title,
-          description: movieData.description,
-          image: movieData.image,
-        };
+      if (streamingData) {
+        setStreamingInfo(streamingData);
+        setError(null);
       } else {
-        setError("Película no encontrada");
-        return null;
+        setError("No se encontro informacion de streaming para esta pelicula");
+        setStreamingInfo(null);
       }
     } catch (err) {
       setError("Hubo un error al obtener los detalles de la película");
       console.error(err);
-      return null;
+      setStreamingInfo(null)
     }
   };
 
-  // Función para agregar una nueva película
-  const addMovie = async (movieTitle) => {
-    const movieDetails = await fetchMovieDetails(movieTitle);
-    
-    if (movieDetails) {
-      setMovies((prevMovies) => [...prevMovies, movieDetails]); // Añadir la nueva película al estado
-      setError(null); // Limpiar cualquier mensaje de error
-      
-      // Ahora guardamos la película en la base de datos del backend
-      try {
-        const response = await axios.post("http://localhost:3000/api/v1/movies", { 
-          name: movieDetails.title,
-          completed: false,
-        });
-        setMovies((prevMovies) => [...prevMovies, response.data.movie]); // Añadir la nueva película al estado
-      } catch (error) {
-        setError("Hubo un error al agregar la película");
-        console.error(error);
-      }
-    }
-  };
+
 
   return (
     <div className="task-form">
       <h4>¿Dónde está la peli? </h4>
-      <Form addmovie={addMovie} />
-      {error && <p className="error-message">{error}</p>} {/* Mostrar errores si existen */}
-      {movies.map((movie, index) => (
-        <Movies task={movie} key={index} /> // Mostrar todas las películas
-      ))}
+      <Form searchMovie={searchMovie} />
+      {error && <p className="error-message">{error}</p>} 
+      {streamingInfo && (
+      <div className="streaming-info">
+      <h3>{streamingInfo.title}</h3>
+      <p>Disponible en:</p>
+      <ul>
+        {streamingInfo.platforms.map((platform, index) => (
+          <li key={index}>{platform}</li>
+        ))}
+      </ul>
     </div>
-  );
+  )}
+</div>
+);
 }
 
 export default App;
