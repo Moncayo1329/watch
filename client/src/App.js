@@ -32,22 +32,22 @@ function App() {
 
   return (
     <div className="task-form">
-      <h4>¿Dónde está la peli? </h4>
+      <h4>¿Dónde está la peli?</h4>
       <Form searchMovie={searchMovie} />
-      {error && <p className="error-message">{error}</p>} 
-      {streamingInfo && (
-      <div className="streaming-info">
-      <h3>{streamingInfo.title}</h3>
-      <p>Disponible en:</p>
-      <ul>
-        {streamingInfo.platforms.map((platform, index) => (
-          <li key={index}>{platform}</li>
-        ))}
-      </ul>
+      {error && <p className="error-message">{error}</p>}
+      {streamingInfo && streamingInfo.platforms && Array.isArray(streamingInfo.platforms) && (
+  <div className="streaming-info">
+    <h3>{streamingInfo.title}</h3>
+    <p>Disponible en:</p>
+    <ul>
+      {streamingInfo.platforms.map((platform, index) => (
+        <li key={index}>{platform}</li>
+      ))}
+    </ul>
+  </div>
+)}
     </div>
-  )}
-</div>
-);
+  );
 }
 
 export default App;
