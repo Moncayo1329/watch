@@ -1,15 +1,20 @@
 const mongoose = require('mongoose');
 
 const MovieSchema = new mongoose.Schema({
-  name: {
+  title: {
     type: String,
-    required: true,
-    maxlength: 100,  // Permitir hasta 100 caracteres para la pelicula
+    required: [true, 'Must provide movie title'],
+    trim: true,
   },
-  completed: {
-    type: Boolean,
-    default: false
-  }
+  shortDescription: {
+    type: String,
+    maxlength: [200, 'Description cannot be more than 200 characters'],
+  },
+  streamingPlatform: {
+    type: String,
+    required: [true, 'Must provide streaming platform'],
+  },
+  // ... other fields you might want to keep
 });
 
-module.exports = mongoose.model('Movies', MovieSchema);
+module.exports = mongoose.model('Movie', MovieSchema);

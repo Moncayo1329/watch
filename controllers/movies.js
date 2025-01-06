@@ -1,83 +1,67 @@
 const Movie = require('../models/movies');
 
-// Obtener todas las películas
-const getAllMovies = async (req, res) => {
-    try {
-        const movies = await Movie.find({});
-        res.status(200).json({ movies });
-    } catch (error) {
-        console.error(error);  // Log para depuración
-        res.status(500).json({ msg: 'Error al obtener las películas', error: error.message });
-    }
-};
-
-// Crear una nueva película
 const createMovie = async (req, res) => {
-    const { name, completed } = req.body; // Asegúrate de que estos campos sean enviados correctamente desde el frontend
-
-    if (!name || typeof completed !== 'boolean') {
-        return res.status(400).json({ msg: 'Faltan datos necesarios (name, completed)' });
-    }
-
-    try {
-        const movie = await Movie.create({ name, completed });
-        res.status(201).json({ movie });
-    } catch (error) {
-        console.error(error);  // Log para depuración
-        res.status(500).json({ msg: 'Error al crear la película', error: error.message });
-    }
+  try {
+    const { title, shortDescription, streamingPlatform } = req.body;
+    const movie = await Movie.create({ title, shortDescription, streamingPlatform });
+    res.status(201).json({ movie });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
 };
 
-// Obtener una película específica
+const getAllMovies = async (req, res) => {
+  try {
+    const movies = await Movie.find({}, 'title shortDescription streamingPlatform');
+    res.status(200).json({ movies });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+};
+
 const getMovie = async (req, res) => {
-    try {
-        const { id: movieID } = req.params;
-        const movie = await Movie.findOne({ _id: movieID });
-
-        if (!movie) {
-            return res.status(404).json({ msg: `No se encontró película con ID: ${movieID}` });
-        }
-
-        res.status(200).json({ movie });
-    } catch (error) {
-        console.error(error);  // Log para depuración
-        res.status(500).json({ msg: 'Error al obtener la película', error: error.message });
-    }
-};
-
-// Actualizar el estado de una película
-const updateMovieStatus = async (req, res) => {
+  try {
     const { id: movieID } = req.params;
-    const { completed } = req.body;
-
-    // Verificar que 'completed' es un valor booleano
-    if (typeof completed !== 'boolean') {
-        return res.status(400).json({ msg: 'El estado de la película debe ser un valor booleano' });
+    const movie = await Movie.findOne({ _id: movieID }, 'title shortDescription streamingPlatform');
+    if (!movie) {
+      return res.status(404).json({ msg: `No movie with id: ${movieID}` });
     }
-
-    try {
-        const movie = await Movie.findOneAndUpdate(
-            { _id: movieID },
-            { completed },
-            { new: true, runValidators: true }
-        );
-
-        if (!movie) {
-            return res.status(404).json({ msg: `No se encontró película con ID: ${movieID}` });
-        }
-
-        res.status(200).json({ movie });
-    } catch (error) {
-        console.error(error);  // Log para depuración
-        res.status(500).json({ msg: 'Error al actualizar el estado de la película', error: error.message });
-    }
+    res.status(200).json({ movie });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
 };
+
+const updateMovieStatus = async (req, res) => {
+try{
+
+    const {id:movieID} = req.params;
+    const {status} = req.body;
+    const movie = await Movie.findOneAndUpdate(
+  {_id:movieID},
+  { status}, 
+  {new: true, runValidators:true}
+    );
+    if(!movie) {
+return res.status(404).json({msg: `No movie with id: ${movieID}`
+
+});
+}
+
+res.status(200).json({ movie });
+} catch (error) {
+res.status(500).json({ msg: error.message });
+}
+};
+
+// ... other controller functions
 
 module.exports = {
-    getAllMovies,
-    createMovie,
-    getMovie,
-    updateMovieStatus,
+  getAllMovies,
+  createMovie,
+  getMovie,
+  updateMovieStatus,
+  // ... other exported functions
 };
 
 
