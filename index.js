@@ -25,8 +25,10 @@ app.get('/Inicio', (req, res) => {
 
 app.get('/api/v1/movies/:title', async (req, res) => {
   const movieTitle = encodeURIComponent(req.params.title);
+  const country = 'ES';
   const apiKey = process.env.WATCHMODE_API_KEY;
   const url = `https://api.watchmode.com/v1/search/?apiKey=${apiKey}&search_field=name&search_value=${movieTitle}`;
+  const ecuadorPlatforms = ['netflix', 'primevideo', 'disneyplus', 'hbomax'];
 
   try {
     const response = await axios.get(url);
@@ -36,14 +38,27 @@ app.get('/api/v1/movies/:title', async (req, res) => {
       const movieData = response.data.title_results[0];
       
       // Get streaming platform information
-      const sourcesUrl = `https://api.watchmode.com/v1/title/${movieData.id}/sources/?apiKey=${apiKey}`;
+      const sourcesUrl = `https://api.watchmode.com/v1/title/${movieData.id}/sources/?apiKey=${apiKey}&regions=${country}`;
       const sourcesResponse = await axios.get(sourcesUrl);
       
+ const streamingPlatforms = sourcesResponse.data
+ .filter(source => source.region === country && source.type ===
+  'sub'  &&
+  ecuadorPlatforms.includes(source.name.toLowerCase())
+ ) 
+
+ .map(source = source.name);
+
+
+ // Remove duplicates 
+
+ const uniquePlatforms = [...new set(streamingPlatforms)];
+
       res.json({
         title: movieData.name,
         year: movieData.year,
         image: movieData.image_url,
-        platforms: sourcesResponse.data.map(source => source.name)
+        platforms: uniquePlatforms
       });
     } else {
       res.status(404).json({ error: 'Movie not found' });
