@@ -24,33 +24,36 @@ app.get('/Inicio', (req, res) => {
 
 
 app.get('/api/v1/movies/:title', async (req, res) => {
-    const movieTitle = encodeURIComponent(req.params.title); // Codificar el título para la URL
-    const apiKey = process.env.TMDB_API_KEY;
-    const url = `https://api.themoviedb.org/3/search/movie?query=${movieTitle}&api_key=${apiKey}&language=en-US`;
-  
-    try {
-      const response = await axios.get(url);
-  
-      console.log(response.data); // Ver la respuesta completa para depuración
-  
-      // Verificar si la respuesta contiene resultados
-      if (response.data.results && response.data.results.length > 0) {
-        const movieData = response.data.results[0]; // Tomar el primer resultado
-  
-        res.json({
-          title: movieData.title,
-          description: movieData.overview,
-          image: `https://image.tmdb.org/t/p/w500${movieData.poster_path}`, // URL de la imagen
-        });
-      } else {
-        res.status(404).json({ error: 'Película no encontrada' });
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Error al buscar la película' });
+  const movieTitle = encodeURIComponent(req.params.title);
+  const apiKey = process.env.WATCHMODE_API_KEY;
+  const url = `https://api.watchmode.com/v1/search/?apiKey=${apiKey}&search_field=name&search_value=${movieTitle}`;
+
+  try {
+    const response = await axios.get(url);
+    console.log('Watchmode API Response:', response.data);
+
+    if (response.data.title_results && response.data.title_results.length > 0) {
+      const movieData = response.data.title_results[0];
+      
+      // Get streaming platform information
+      const sourcesUrl = `https://api.watchmode.com/v1/title/${movieData.id}/sources/?apiKey=${apiKey}`;
+      const sourcesResponse = await axios.get(sourcesUrl);
+      
+      res.json({
+        title: movieData.name,
+        year: movieData.year,
+        image: movieData.image_url,
+        platforms: sourcesResponse.data.map(source => source.name)
+      });
+    } else {
+      res.status(404).json({ error: 'Movie not found' });
     }
-  });
-  
+  } catch (error) {
+    console.error('Error details:', error.response ? error.response.data : error.message);
+    res.status(500).json({ error: 'Error searching for the movie' });
+  }
+});
+
 
 
 app.use('/api/v1/movies', movies);
