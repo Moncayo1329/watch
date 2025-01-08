@@ -37,22 +37,16 @@ app.get('/api/v1/movies/:title', async (req, res) => {
     if (response.data.title_results && response.data.title_results.length > 0) {
       const movieData = response.data.title_results[0];
       
-      // Get streaming platform information
+      // Obtener información sobre las plataformas de streaming
       const sourcesUrl = `https://api.watchmode.com/v1/title/${movieData.id}/sources/?apiKey=${apiKey}&regions=${country}`;
       const sourcesResponse = await axios.get(sourcesUrl);
       
- const streamingPlatforms = sourcesResponse.data
- .filter(source => source.region === country && source.type ===
-  'sub'  &&
-  ecuadorPlatforms.includes(source.name.toLowerCase())
- ) 
+      const streamingPlatforms = sourcesResponse.data
+        .filter(source => source.region === country && source.type === 'sub' && ecuadorPlatforms.includes(source.name.toLowerCase()))
+        .map(source => source.name); // Agregar return aquí
 
- .map(source = source.name);
-
-
- // Remove duplicates 
-
- const uniquePlatforms = [...new set(streamingPlatforms)];
+      // Eliminar duplicados
+      const uniquePlatforms = [...new Set(streamingPlatforms)]; // Cambiar a Set con "S" mayúscula
 
       res.json({
         title: movieData.name,
