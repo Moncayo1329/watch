@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
-const connectDB = require('./db/connect');
+const connectDB = require('./db/connect'); // Ensure this path is correct
 require('dotenv').config();
 
 const app = express();
@@ -24,43 +24,62 @@ app.use(express.json());
 app.get('/Inicio', (req, res) => {
     res.send('Watch List movie');
 });
+
 app.get('/api/v1/movies/:title', async (req, res) => {
-  const movieTitle = encodeURIComponent(req.params.title);
-  const apiKey = process.env.WATCHMODE_API_KEY;
-  const url = `https://api.watchmode.com/v1/search/?apiKey=${apiKey}&search_field=name&search_value=${movieTitle}`;
+    const movieTitle = encodeURIComponent(req.params.title);
+    const apiKey = process.env.WATCHMODE_API_KEY;
+    const url = `https://api.watchmode.com/v1/search/?apiKey=${apiKey}&search_field=name&search_value=${movieTitle}`;
 
-  try {
-      console.log(`Requesting URL: ${url}`); // Log the request URL
-      const response = await axios.get(url);
-      console.log('Search API Response:', response.data); // Log the search response
+    try {
+        console.log(`Requesting URL: ${url}`); // Log the request URL
+        const response = await axios.get(url);
+        console.log('Search API Response:', response.data); // Log the search response
 
-      const titleResults = response.data.title_results;
+        const titleResults = response.data.title_results;
 
-      if (titleResults && titleResults.length > 0) {
-          const movieData = titleResults[0];
-          console.log('Movie Data:', movieData); // Log movie data
+        if (titleResults && titleResults.length > 0) {
+            const movieData = titleResults[0];
+            console.log('Movie Data:', movieData); // Log movie data
 
-          // Get streaming platform information
-          const sourcesUrl = `https://api.watchmode.com/v1/title/${movieData.id}/sources/?apiKey=${apiKey}`;
-          console.log(`Requesting Sources URL: ${sourcesUrl}`); // Log sources request
-          const sourcesResponse = await axios.get(sourcesUrl);
-          console.log('Sources API Response:', sourcesResponse.data); // Log sources response
-
-          res.json({
-              title: movieData.name,
-              year: movieData.year,
-              image: movieData.image_url,
-              platforms: sourcesResponse.data.map(source => source.name) // Return platform names
-          });
-      } else {
-          res.status(404).json({ error: 'Movie not found' });
-      }
-  } catch (error) {
-      console.error('Error details:', error.response ? error.response.data : error.message);
-      res.status(500).json({ error: 'Error searching for the movie' });
-  }
+            // Get streaming platform information
+            const sourcesUrl = `https://api.watchmode.com/v1/title/${movieData.id}/sources/?apiKey=${apiKey}`;
+            console.log(`Requesting Sources URL: ${sourcesUrl}`); // Log sources request
+            const sourcesResponse = await axios.get(sourcesUrl);
+            console.log('Sources API Response:', sourcesResponse.data); // Log sources response
+            
+            // Extract platform names without filtering
+            const allPlatforms = sourcesResponse.data.map(source => source.name);
+            
+           
+ // Extract unique platform names
+ const uniquePlatforms = new Set(allPlatforms); // Create a Set for unique platform names
+            
+            res.json({
+                title: movieData.name,
+                year: movieData.year,
+                image: movieData.image_url,
+                platforms: Array.from(uniquePlatforms) // Convert Set back to an array
+            });
+        } else {
+            res.status(404).json({ error: 'Movie not found' });
+        }
+    } catch (error) {
+        console.error('Error details:', error.response ? error.response.data : error.message);
+        res.status(500).json({ error: 'Error searching for the movie' });
+    }
 });
 
+// Define the start function to connect to the database and start the server
+const start = async () => {
+    try {
+        await connectDB(process.env.MONGO_MOV);  // Connect to the database
+        app.listen(5000, '0.0.0.0', () => {
+            console.log(`Server is listening on http://localhost:5000...`);
+        });
+    } catch (error) {
+        console.error('Database connection error:', error);
+    }
+};
 
-
+// Call the start function to initialize the server
 start();
