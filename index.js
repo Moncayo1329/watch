@@ -88,14 +88,15 @@ app.get('/api/v1/movies/:title', async (req, res) => {
 const start = async () => {
     try {
         await connectDB(process.env.MONGO_MOV);  // Connect to the database
-        console.log('Connected to the database');
+        app.listen(5000, '0.0.0.0', () => {
+            console.log(`Server is listening on http://localhost:5000...`);
+        });
     } catch (error) {
         console.error('Database connection error:', error);
-        process.exit(1);
     }
 };
 
-// Call the start function to initialize the database connection
+// Call the start function to initialize the server
 start();
 
 // Export the Express app
