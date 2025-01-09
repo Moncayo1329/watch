@@ -51,9 +51,8 @@ app.get('/api/v1/movies/:title', async (req, res) => {
             // Extract platform names without filtering
             const allPlatforms = sourcesResponse.data.map(source => source.name);
             
-
             // Extract unique platform names
- const uniquePlatforms = new Set(allPlatforms); // Create a Set for unique platform names
+            const uniquePlatforms = new Set(allPlatforms); // Create a Set for unique platform names
 
             // Customize response messages based on language
             let message;
@@ -85,17 +84,19 @@ app.get('/api/v1/movies/:title', async (req, res) => {
     }
 });
 
-// Define the start function to connect to the database and start the server
+// Define the start function to connect to the database
 const start = async () => {
     try {
         await connectDB(process.env.MONGO_MOV);  // Connect to the database
-        app.listen(5000, '0.0.0.0', () => {
-            console.log(`Server is listening on http://localhost:5000...`);
-        });
+        console.log('Connected to the database');
     } catch (error) {
         console.error('Database connection error:', error);
+        process.exit(1);
     }
 };
 
-// Call the start function to initialize the server
+// Call the start function to initialize the database connection
 start();
+
+// Export the Express app
+module.exports = app;
