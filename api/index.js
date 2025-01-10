@@ -20,7 +20,7 @@ app.use(cors({
 app.use(express.json());
 
 // Rutas del backend
-app.get('/Inicio', (req, res) => {
+app.get('/', (req, res) => {
     res.send('Watch List movie');
 });
 
