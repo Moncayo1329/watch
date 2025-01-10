@@ -19,10 +19,7 @@ app.use(cors({
 
 app.use(express.json());
 
-// Rutas del backend
-app.get('/', (req, res) => {
-    res.send('Watch List movie');
-});
+
 
 app.get('/api/v1/movies/:title', async (req, res) => {
     const movieTitle = encodeURIComponent(req.params.title);
