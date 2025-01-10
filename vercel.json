@@ -9,18 +9,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "api/index.js"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/service-worker.js",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/javascript"
-        }
-      ]
+      "dest": "/api/index.js"
     }
   ]
 }
