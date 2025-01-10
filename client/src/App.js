@@ -2,33 +2,31 @@ import React, { useState } from "react";
 import axios from "axios";
 import Form from "./movieForm"; // Componente para el formulario
 
+// Usa una variable de entorno para la URL de la API, con fallback a localhost para desarrollo
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 function App() {
   const [streamingInfo, setStreamingInfo] = useState(null);
-  const [error, setError] = useState(null); // Manejo de errores
+  const [error, setError] = useState(null);
 
-
-
-  // Función para obtener detalles de una película desde la API de TMDb
   const searchMovie = async (movieTitle) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/v1/movies/${movieTitle}`);
-      const streamingData = response.data; // Se asume que la respuesta es un objeto con datos de la película
+      const response = await axios.get(`${API_URL}/api/v1/movies/${movieTitle}`);
+      const streamingData = response.data;
 
       if (streamingData) {
         setStreamingInfo(streamingData);
         setError(null);
       } else {
-        setError("No se encontro informacion de streaming para esta pelicula");
+        setError("No se encontró información de streaming para esta película");
         setStreamingInfo(null);
       }
     } catch (err) {
       setError("Hubo un error al obtener los detalles de la película");
       console.error(err);
-      setStreamingInfo(null)
+      setStreamingInfo(null);
     }
   };
-
-
 
   return (
     <div className="task-form">
@@ -36,16 +34,16 @@ function App() {
       <Form searchMovie={searchMovie} />
       {error && <p className="error-message">{error}</p>}
       {streamingInfo && streamingInfo.platforms && Array.isArray(streamingInfo.platforms) && (
-  <div className="streaming-info">
-    <h3>{streamingInfo.title}</h3>
-    <p>Disponible en:</p>
-    <ul>
-      {streamingInfo.platforms.map((platform, index) => (
-        <li key={index}>{platform}</li>
-      ))}
-    </ul>
-  </div>
-)}
+        <div className="streaming-info">
+          <h3>{streamingInfo.title}</h3>
+          <p>Disponible en:</p>
+          <ul>
+            {streamingInfo.platforms.map((platform, index) => (
+              <li key={index}>{platform}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
